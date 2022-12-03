@@ -3,14 +3,16 @@ import {
   CardActionArea,
   CardContent,
   Typography,
-  Box,
+  Grid,
 } from "@mui/material";
 
-const ScoreCard = ({ card, onClick }) => {
+const ScoreCard = ({ card, onClick, disabled }) => {
+  const isSelected = !!card.selectedBy;
+
   return (
     <Card sx={{ width: 200, padding: "10px" }}>
       <CardActionArea
-        disabled={card.isSelected}
+        disabled={isSelected || disabled}
         onClick={onClick}
         sx={{
           ":disabled": {
@@ -20,17 +22,19 @@ const ScoreCard = ({ card, onClick }) => {
         }}
       >
         <CardContent
-          component={Box}
-          display="flex"
+          component={Grid}
+          container
           sx={{
             height: 300,
-            bgcolor: card.isSelected && "grey.300",
-            justifyContent: "center",
+            bgcolor: isSelected && "grey.300",
             alignItems: "center",
           }}
         >
-          <Typography display="inline" fontSize={40}>
-            {card.isSelected && card.score}
+          <Typography component={Grid} item xs={12} fontSize={20}>
+            {isSelected && card.selectedBy}
+          </Typography>
+          <Typography component={Grid} item xs={12} fontSize={30}>
+            {isSelected && card.score}
           </Typography>
         </CardContent>
       </CardActionArea>

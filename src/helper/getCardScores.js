@@ -4,7 +4,7 @@ const getCards = () => {
   while (scores.length < 5) {
     let score = Math.floor(Math.random() * 100) + 1;
     if (scores.indexOf(score) === -1) {
-      scores.push({ number, score, isSelected: false });
+      scores.push({ number, score, selectedBy: null });
       number++;
     }
   }
