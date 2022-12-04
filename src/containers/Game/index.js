@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { Grid, Typography } from "@mui/material";
+import { Alert, Button, Grid, Typography } from "@mui/material";
 import { doc, onSnapshot, setDoc, updateDoc } from "firebase/firestore";
 
 import ScoreCard from "containers/ScoreCard";
@@ -59,6 +59,17 @@ const Game = () => {
     });
   };
 
+  const handleRestart = () => {
+    for (let playerId in players.current) {
+      players.current[playerId] = { cardSelected: null };
+    }
+
+    updateDoc(docRef.current, {
+      cards: getCards(),
+      players: players.current,
+    });
+  };
+
   return (
     <Grid container spacing={2} justifyContent="center" mt="10vh">
       <Typography
@@ -79,6 +90,15 @@ const Game = () => {
           />
         </Grid>
       ))}
+      <Grid item xs={12} display="flex" mt={5} justifyContent="center">
+        {!!player && player.playerId === "Player1" ? (
+          <Button variant="outlined" onClick={handleRestart}>
+            Restart
+          </Button>
+        ) : (
+          <Alert severity="info">Only Player1 can restart.</Alert>
+        )}
+      </Grid>
     </Grid>
   );
 };
